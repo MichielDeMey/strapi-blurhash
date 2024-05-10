@@ -1,7 +1,5 @@
 'use strict';
 
-const { getAbsoluteServerUrl } = require('@strapi/utils');
-
 module.exports = ({ strapi }) => {
   const generateBlurhash = async (event, eventType) => {
     const { data, where } = event.params;
@@ -11,7 +9,7 @@ module.exports = ({ strapi }) => {
       if (data.url.startsWith('http')) {
         fullUrl = data.url;
       } else {
-        fullUrl = `${getAbsoluteServerUrl(strapi.config)}${data.url}`;
+        fullUrl = `${strapi.config.get('server.absoluteUrl')}${data.url}`;
       }
       data.blurhash = await strapi.plugin('strapi-blurhash').service('blurhash').generateBlurhash(fullUrl);
     }
